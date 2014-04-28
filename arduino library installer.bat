@@ -8,7 +8,7 @@ set libname=skbrii/biWheel
 set lib=biWheel-master
 set libn=biWheel
 rem | Path to Arduino libraries folder:
-set ardu_lib_fldr=C:\Program Files (x86)\Arduino\libraries
+set ardu_lib_fldr="C:\Program Files (x86)\Arduino\libraries"
 rem | Set temp folder:
 set "temp_path=c:\tmp1020"
 
@@ -31,12 +31,20 @@ bitsadmin /SetNotifyCmdLine myDownloadJob "%SystemRoot%\system32\bitsadmin.exe" 
 bitsadmin /resume myDownloadJob
 
 rem чистим за собой
-sleep 500
+sleep 100
+
 unzip %temp_file_path% -d %temp_path%
-rem del %temp_file_path%
-ren %temp_path%\%lib% %temp_path%\%libn%
-copy %temp_path%\%libn% %ardu_lib_fldr%
-rem rmdir %temp_path%
+
+set "temp_lib=%temp_path%\%lib%"
+set "new_temp_lib=%temp_path%\%libn%"
+
+echo %temp_lib% %libn%
+ren  %temp_lib% %libn%
+echo %new_temp_lib% %ardu_lib_fldr%
+xcopy %new_temp_lib% %ardu_lib_fldr%\%libn% /E
+
+rmdir %temp_path%
 bitsadmin /reset
+rem del %temp_file_path%
 endlocal
 exit /b
