@@ -1,3 +1,0 @@
-#put here list of libraries, which you want to download from GitHub
-
-skbrii/biWheel
