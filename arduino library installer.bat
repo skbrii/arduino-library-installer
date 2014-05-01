@@ -2,23 +2,28 @@
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 rem | Set this script version
-set version=0.05
+set version=0.07
 rem | Set library for download:
-set libname=skbrii/biWheel
-set lib=biWheel-master
-set libn=biWheel
+set git_usr=skbrii
+set git_repo=biWheel
+set "temp_path=c:\tmp1020"
+
+
+rem set "git_repoame=%git_usr%/%git_repo%"
+set "lib=%git_repo%-master"
+rem set git_repo=biWheel
 rem | Path to Arduino libraries folder:
 set ardu_lib_fldr="C:\Program Files (x86)\Arduino\libraries"
 rem | Set temp folder:
 set "temp_path=c:\tmp1020"
 
-set "_s1=https://github.com/"
+set "giturl=https://github.com/"
 set "_s2=/archive/"
-set "_s3=master.zip"
-set "www_path_to_lib=%_s1%%libname%%_s2%%_s3%"
+set "master=master.zip"
+set /p "www_path_to_lib=%giturl%%git_usr%/%git_repo%%_s2%%master%"
 
-set "_d2=master.zip"
-set "temp_file_path=%temp_path%\%_d2%"
+
+set "temp_file_path=%temp_path%\%master%"
 
 echo Hello, this is library installer script, version %version%
 
@@ -36,12 +41,12 @@ sleep 100
 unzip %temp_file_path% -d %temp_path%
 
 set "temp_lib=%temp_path%\%lib%"
-set "new_temp_lib=%temp_path%\%libn%"
+set "new_temp_lib=%temp_path%\%git_repo%"
 
-echo %temp_lib% %libn%
-ren  %temp_lib% %libn%
-echo %new_temp_lib% %ardu_lib_fldr%
-xcopy %new_temp_lib% %ardu_lib_fldr%\%libn% /E
+rem echo %temp_lib% %git_repo%
+ren  %temp_lib% %git_repo%
+rem echo %new_temp_lib% %ardu_lib_fldr%
+xcopy %new_temp_lib% %ardu_lib_fldr%\%git_repo% /E
 
 rmdir %temp_path%
 bitsadmin /reset
