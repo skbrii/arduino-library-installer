@@ -3,12 +3,19 @@ SETLOCAL ENABLEDELAYEDEXPANSION enableextensions
 
 rem | Set this script version
 set version=1.0
+
+echo Hello, this is library installer script, version %version%
+
 rem | Set library for download:
 set git_usr=skbrii
 set git_repo=biWheel
 rem Or uncomment this 2 lines:
 rem set /p git_usr=
 rem set /p git_repo=
+echo ---------
+echo Library %git_usr%/%git_repo% will be installed
+echo To install another library follow instruction in sourcecode of this script
+echo ---------
 
 rem | TEmp path, must be on the same disk as Arduino folder
 set "temp_path=c:\tmp1020"
@@ -22,9 +29,6 @@ set "www_path_to_lib=%giturl%%git_usr%/%git_repo%/archive/master.zip"
 rem https://github.com/skbrii/biWheel/archive/master.zip   biWheel-
 set "temp_file_path=%temp_path%\%lib%.zip"
 set jobName=myDownloadJob
-
-
-echo Hello, this is library installer script, version %version%
 
 rem Creating temp folder
 md %temp_path%
