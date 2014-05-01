@@ -6,6 +6,8 @@ set version=1.0
 
 echo Hello, this is library installer script, version %version%
 
+rem | Path to Arduino libraries folder:
+set ardu_lib_fldr="C:\Program Files (x86)\Arduino\libraries"
 rem | Set library for download:
 set git_usr=skbrii
 set git_repo=biWheel
@@ -19,9 +21,6 @@ echo ---------
 
 rem | TEmp path, must be on the same disk as Arduino folder
 set "temp_path=c:\tmp1020"
-rem | Path to Arduino libraries folder:
-set ardu_lib_fldr="C:\Program Files (x86)\Arduino\libraries"
-
 
 set "lib=%git_repo%-master"
 set "giturl=https://github.com/"
