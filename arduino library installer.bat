@@ -14,25 +14,38 @@ set ardu_lib_fldr="C:\Program Files (x86)\Arduino\libraries"
 
 set "lib=%git_repo%-master"
 set "giturl=https://github.com/"
-set "master=master.zip"
-set /p "www_path_to_lib=%giturl%%git_usr%/%git_repo%/archive/%master%"
-set "temp_file_path=%temp_path%\%master%"
+set "www_path_to_lib=%giturl%%git_usr%/%git_repo%/archive/%lib%.zip"
+rem https://github.com/skbrii/biWheel/archive/biWheel-master.zip
+set "temp_file_path=%temp_path%\%lib%.zip"
+set jobName=myDownloadJob
 
 
 echo Hello, this is library installer script, version %version%
 
 rem Creating temp folder
-md %temp_path%
+rem md %temp_path%
 
 rem Magic withs Windows BITSadmin service
-bitsadmin /create myDownloadJob
-bitsadmin /addfile myDownloadJob %www_path_to_lib% %temp_file_path%
-rem bitsadmin /SetNotifyCmdLine myDownloadJob "%SystemRoot%\system32\bitsadmin.exe" "%SystemRoot%\system32\bitsadmin.exe /complete myDownloadJob"
-bitsadmin /resume myDownloadJob
+bitsadmin /create %jobName%
+echo %jobName% %www_path_to_lib% %temp_file_path%
+bitsadmin /addfile %jobName% %www_path_to_lib% %temp_file_path%
+rem bitsadmin /SetNotifyCmdLine jobName "%SystemRoot%\system32\bitsadmin.exe" "%SystemRoot%\system32\bitsadmin.exe /complete %jobName%"
+bitsadmin /resume %jobName%
 
-sleep 100
+:check
+REM bitsadmin /Info %jobName% > %var1%
+for /F "tokens=*" %%i in ('bitsadmin /Info %jobName%') do set var1=%%i
+echo -------
+echo %var1%
+set "var3='%jobName%' TRANSFERRED 1 / 1"
+set var2=%var1:%var3%=%%
+sleep 2
+echo ----
+if NOT "%var1%" == "%var2%" (goto :check) else (bitsadmin /resume %jobName%) 
+echo ++++
+rem sleep 100
 
-rem Разархивируем полученный архив "master.zip", получим папку типа "biWheel-master"
+rem Разархивируем полученный архив "biWheel-master.zip", получим папку типа "biWheel-master"
 unzip %temp_file_path% -d %temp_path%
 
 set "temp_lib=%temp_path%\%lib%"
@@ -44,7 +57,7 @@ rem Копируем ее в папку для библиотек Ардуино
 xcopy %new_temp_lib% %ardu_lib_fldr%\%git_repo% /E
 
 rem чистим за собой
-rmdir %temp_path%
+rem rmdir %temp_path%
 bitsadmin /reset
 rem del %temp_file_path%
 endlocal
