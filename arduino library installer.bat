@@ -53,10 +53,10 @@ echo Library downloaded sucessfull!
 bitsadmin /complete %jobName%
 
 rem Разархивируем полученный архив "BiWheel-master.zip", получим папку типа "BiWheel-master"
-unzip %temp_file_path% -d %temp_path%
+rem unzip %temp_file_path% -d %temp_path%
 rem call 7za.exe x %lib%.zip -o%temp_path%
-rem set "dd=^ x^ %lib%.zip^ -o%temp_path%"
-rem call 7za.exe%dd%
+set "dd=^ x^ %temp_file_path%^ -o%temp_path%"
+call 7za.exe%dd%
 
 set "temp_lib=%temp_path%\%lib%"
 set "new_temp_lib=%temp_path%\%git_repo%"
